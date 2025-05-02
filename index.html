@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate AWS and Azure cloud egress costs with ExitCost. Estimate download time and API costs for your cloud exit.">
+    <meta name="keywords" content="cloud egress cost, AWS egress calculator, Azure exit cost, cloud cost calculator">
+    <meta name="author" content="ExitCost">
+    <title>ExitCost - Cloud Egress Cost Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            outline: none;
+        }
+
+        select option {
+            background: #1e3a8a;
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #22c55e;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #16a34a;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            display: none;
+        }
+
+        #result p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            label {
+                font-size: 1rem;
+            }
+
+            button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ExitCost - Cloud Egress Cost Calculator</h1>
+        <div class="form-group">
+            <label for="cloud">Cloud Provider</label>
+            <select id="cloud" required>
+                <option value="aws">AWS</option>
+                <option value="azure">Azure</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="region">Region</label>
+            <select id="region" required>
+                <option value="us-east">US East</option>
+                <option value="eu-west">EU West</option>
+                <option value="asia-pacific">Asia Pacific</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="dataSize">Data Size (TB)</label>
+            <input type="number" id="dataSize" min="0" step="0.1" required placeholder="e.g., 10">
+        </div>
+        <div class="form-group">
+            <label for="objectSize">Object Size</label>
+            <select id="objectSize" required>
+                <option value="small">Small (~1 MB)</option>
+                <option value="medium">Medium (~100 MB)</option>
+                <option value="large">Large (~1 GB)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="speed">Internet Speed (Gbps)</label>
+            <input type="number" id="speed" min="0" step="0.1" required placeholder="e.g., 1">
+        </div>
+        <div class="form-group">
+            <label for="availability">Availability (%)</label>
+            <input type="number" id="availability" min="0" max="100" step="1" required placeholder="e.g., 60">
+        </div>
+        <button onclick="calculate()">Exit Now</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Egress cost tiers (per GB, USD) by region
+        const cloudCosts = {
+            aws: {
+                'us-east': [
+                    { limit: 100 / 1024, cost: 0 }, // First 100 GB free
+                    { limit: 10, cost: 0.09 }, // Up to 10 TB
+                    { limit: 50, cost: 0.085 }, // Next 40 TB
+                    { limit: 150, cost: 0.07 }, // Next 100 TB
+                    { limit: Infinity, cost: 0.05 } // >150 TB
+                ],
+                'eu-west': [
+                    { limit: 100 / 1024, cost: 0 },
+                    { limit: 10, cost: 0.09 },
+                    { limit: 50, cost: 0.085 },
+                    { limit: 150, cost: 0.07 },
+                    { limit: Infinity, cost: 0.05 }
+                ],
+                'asia-pacific': [
+                    { limit: 100 / 1024, cost: 0 },
+                    { limit: 10, cost: 0.117 },
+                    { limit: 50, cost: 0.1105 },
+                    { limit: 150, cost: 0.091 },
+                    { limit: Infinity, cost: 0.065 }
+                ]
+            },
+            azure: {
+                'us-east': [
+                    { limit: 100 / 1024, cost: 0 },
+                    { limit: 10, cost: 0.087 },
+                    { limit: 50, cost: 0.083 },
+                    { limit: 150, cost: 0.07 },
+                    { limit: 500, cost: 0.05 },
+                    { limit: Infinity, cost: 0.05 }
+                ],
+                'eu-west': [
+                    { limit: 100 / 1024, cost: 0 },
+                    { limit: 10, cost: 0.087 },
+                    { limit: 50, cost: 0.083 },
+                    { limit: 150, cost: 0.07 },
+                    { limit: 500, cost: 0.05 },
+                    { limit: Infinity, cost: 0.05 }
+                ],
+                'asia-pacific': [
+                    { limit: 100 / 1024, cost: 0 },
+                    { limit: 10, cost: 0.10875 },
+                    { limit: 50, cost: 0.10375 },
+                    { limit: 150, cost: 0.0875 },
+                    { limit: 500, cost: 0.0625 },
+                    { limit: Infinity, cost: 0.0625 }
+                ]
+            }
+        };
+
+        // API call costs (per GET request, USD)
+        const apiCallCost = {
+            aws: 0.005 / 1000, // $0.005 per 1,000 GET requests
+            azure: 0.004 / 10000 // $0.004 per 10,000 read operations
+        };
+
+        function calculate() {
+            // Get inputs
+            const cloud = document.getElementById('cloud').value;
+            const region = document.getElementById('region').value;
+            const dataSizeTB = parseFloat(document.getElementById('dataSize').value);
+            const objectSize = document.getElementById('objectSize').value;
+            const speedGbps = parseFloat(document.getElementById('speed').value);
+            const availability = parseFloat(document.getElementById('availability').value) / 100;
+
+            // Validate inputs
+            if (!dataSizeTB || !speedGbps || !availability || dataSizeTB < 0 || speedGbps < 0 || availability < 0 || availability > 1) {
+                alert('Please enter valid inputs.');
+                return;
+            }
+
+            // Convert TB to GB
+            const dataSizeGB = dataSizeTB * 1024;
+
+            // Calculate egress cost using tiered pricing
+            const tiers = cloudCosts[cloud][region];
+            let remainingGB = dataSizeGB;
+            let egressCost = 0;
+
+            for (const tier of tiers) {
+                if (remainingGB <= 0) break;
+                const tierSizeGB = (tier.limit === Infinity ? Infinity : tier.limit * 1024);
+                const gbInThisTier = Math.min(remainingGB, tierSizeGB - (tiers.indexOf(tier) === 0 ? 0 : tiers[tiers.indexOf(tier) - 1].limit * 1024));
+                egressCost += gbInThisTier * tier.cost;
+                remainingGB -= gbInThisTier;
+            }
+
+            // Calculate API call cost based on object size
+            let requestsPerGB;
+            switch (objectSize) {
+                case 'small': // 1 MB = 0.001 GB
+                    requestsPerGB = 1000; // 1 GB = 1,000 objects
+                    break;
+                case 'medium': // 100 MB = 0.1 GB
+                    requestsPerGB = 10; // 1 GB = 10 objects
+                    break;
+                case 'large': // 1 GB
+                    requestsPerGB = 1; // 1 GB = 1 object
+                    break;
+            }
+            const getRequests = dataSizeGB * requestsPerGB;
+            const apiCost = getRequests * apiCallCost[cloud];
+
+            // Total cost
+            const totalCost = egressCost + apiCost;
+
+            // Calculate download time
+            let speedOverhead = objectSize === 'small' ? 0.90 : 0.95; // 10% for small objects, 5% otherwise
+            const availableBandwidthGbps = speedGbps * availability;
+            const bandwidthGBps = availableBandwidthGbps * 0.125; // 1 Gbps = 0.125 GB/s
+            const effectiveBandwidthGBps = bandwidthGBps * speedOverhead;
+            const downloadTimeSeconds = dataSizeGB / effectiveBandwidthGBps;
+            const downloadTimeHours = downloadTimeSeconds / 3600;
+            const downloadTimeDays = downloadTimeHours / 24;
+
+            // Format duration
+            let durationText = `${downloadTimeHours.toFixed(2)} hours`;
+            if (downloadTimeHours > 48) {
+                durationText += ` (${downloadTimeDays.toFixed(2)} days)`;
+            }
+
+            // Display results
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <p><strong>Download Time:</strong> ${durationText}</p>
+                <p><strong>Egress Cost:</strong> $${egressCost.toFixed(2)}</p>
+                <p><strong>API Call Cost:</strong> $${apiCost.toFixed(2)}</p>
+                <p><strong>Total Cost:</strong> $${totalCost.toFixed(2)}</p>
+            `;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
