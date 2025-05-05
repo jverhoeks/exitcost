@@ -3,10 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculate AWS and Azure cloud egress costs with ExitCost. Estimate download time and API costs for your cloud exit.">
-    <meta name="keywords" content="cloud egress cost, AWS egress calculator, Azure exit cost, cloud cost calculator">
-    <meta name="author" content="ExitCost">
-    <title>ExitCost - Cloud Egress Cost Calculator</title>
+    <!-- Enhanced Meta Description -->
+    <meta name="description" content="ExitCost.com - Free calculator tool to estimate AWS and Azure cloud egress costs and download times. Plan your cloud migration with accurate cost predictions.">
+    <!-- Expanded Keywords -->
+    <meta name="keywords" content="cloud egress cost, AWS egress calculator, Azure exit cost, cloud cost calculator, data migration cost, cloud data transfer pricing, cloud migration planning, data transfer calculator">
+    <!-- Added Author with Link -->
+    <meta name="author" content="Jacob Verhoeks">
+    <!-- Added Canonical URL -->
+    <link rel="canonical" href="https://exitcost.com">
+    <!-- Social Media Tags -->
+    <meta property="og:title" content="ExitCost - Cloud Egress Cost Calculator">
+    <meta property="og:description" content="Calculate AWS and Azure cloud egress costs and download times. Plan your cloud exit strategy with accurate cost predictions.">
+    <meta property="og:url" content="https://exitcost.com">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ExitCost - Cloud Egress Cost Calculator">
+    <meta name="twitter:description" content="Calculate AWS and Azure cloud egress costs and download times. Plan your cloud exit strategy with accurate cost predictions.">
+    <!-- Enhanced Title with Primary Keyword -->
+    <title>ExitCost - Cloud Egress Cost & Download Time Calculator | AWS & Azure</title>
     <style>
         * {
             margin: 0;
@@ -98,6 +112,22 @@
             margin-bottom: 10px;
         }
 
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+        }
+
+        .footer a {
+            color: #22c55e;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -116,48 +146,76 @@
             }
         }
     </style>
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "ExitCost - Cloud Egress Cost Calculator",
+        "description": "Calculate AWS and Azure cloud egress costs and download times. Plan your cloud exit strategy with accurate cost predictions.",
+        "url": "https://exitcost.com",
+        "applicationCategory": "BusinessApplication",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Jacob Verhoeks",
+            "url": "https://jacob.verhoeks.org/blog/"
+        }
+    }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>ExitCost - Cloud Egress Cost Calculator</h1>
-        <div class="form-group">
-            <label for="cloud">Cloud Provider</label>
-            <select id="cloud" required>
-                <option value="aws">AWS</option>
-                <option value="azure">Azure</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="region">Region</label>
-            <select id="region" required>
-                <option value="us-east">US East</option>
-                <option value="eu-west">EU West</option>
-                <option value="asia-pacific">Asia Pacific</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="dataSize">Data Size (TB)</label>
-            <input type="number" id="dataSize" min="0" step="0.1" required placeholder="e.g., 10">
-        </div>
-        <div class="form-group">
-            <label for="objectSize">Object Size</label>
-            <select id="objectSize" required>
-                <option value="small">Small (~1 MB)</option>
-                <option value="medium">Medium (~100 MB)</option>
-                <option value="large">Large (~1 GB)</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="speed">Internet Speed (Gbps)</label>
-            <input type="number" id="speed" min="0" step="0.1" required placeholder="e.g., 1">
-        </div>
-        <div class="form-group">
-            <label for="availability">Availability (%)</label>
-            <input type="number" id="availability" min="0" max="100" step="1" required placeholder="e.g., 60">
-        </div>
-        <button onclick="calculate()">Exit Now</button>
-        <div id="result"></div>
-    </div>
+    <main class="container">
+        <header>
+            <h1>ExitCost - Cloud Egress Cost Calculator</h1>
+        </header>
+        <section>
+            <div class="form-group">
+                <label for="cloud">Cloud Provider</label>
+                <select id="cloud" required aria-label="Select cloud provider">
+                    <option value="aws">AWS</option>
+                    <option value="azure">Azure</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="region">Region</label>
+                <select id="region" required aria-label="Select cloud region">
+                    <option value="us-east">US East</option>
+                    <option value="eu-west">EU West</option>
+                    <option value="asia-pacific">Asia Pacific</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dataSize">Data Size (TB)</label>
+                <input type="number" id="dataSize" min="0" step="0.1" required placeholder="e.g., 10" aria-label="Enter data size in terabytes">
+            </div>
+            <div class="form-group">
+                <label for="objectSize">Object Size</label>
+                <select id="objectSize" required aria-label="Select average object size">
+                    <option value="small">Small (~1 MB)</option>
+                    <option value="medium">Medium (~100 MB)</option>
+                    <option value="large">Large (~1 GB)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="speed">Internet Speed (Gbps)</label>
+                <input type="number" id="speed" min="0" step="0.1" required placeholder="e.g., 1" aria-label="Enter your internet speed in gigabits per second">
+            </div>
+            <div class="form-group">
+                <label for="availability">Availability (%)</label>
+                <input type="number" id="availability" min="0" max="100" step="1" required placeholder="e.g., 60" aria-label="Enter bandwidth availability percentage">
+            </div>
+            <button onclick="calculate()">Calculate Egress Costs</button>
+            <div id="result" role="region" aria-live="polite"></div>
+        </section>
+        <footer class="footer">
+            <p>Created by <a href="https://jacob.verhoeks.org/blog/" rel="author" target="_blank">Jacob Verhoeks</a> | Calculate your cloud exit costs with precision</p>
+        </footer>
+    </main>
 
     <script>
         // Egress cost tiers (per GB, USD) by region
@@ -287,6 +345,7 @@
             // Display results
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = `
+                <h2>Your Cloud Exit Results</h2>
                 <p><strong>Download Time:</strong> ${durationText}</p>
                 <p><strong>Egress Cost:</strong> $${egressCost.toFixed(2)}</p>
                 <p><strong>API Call Cost:</strong> $${apiCost.toFixed(2)}</p>
