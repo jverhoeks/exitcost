@@ -3,356 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Enhanced Meta Description -->
-    <meta name="description" content="ExitCost.com - Free calculator tool to estimate AWS and Azure cloud egress costs and download times. Plan your cloud migration with accurate cost predictions.">
-    <!-- Expanded Keywords -->
-    <meta name="keywords" content="cloud egress cost, AWS egress calculator, Azure exit cost, cloud cost calculator, data migration cost, cloud data transfer pricing, cloud migration planning, data transfer calculator">
-    <!-- Added Author with Link -->
+    <meta name="description" content="ExitCost.com - Free cloud exit calculator. Price your AWS, Azure or GCP egress, compare the same setup on Hetzner, Scaleway, OVHcloud and Exoscale, and see the month your migration pays for itself.">
+    <meta name="keywords" content="cloud exit cost, AWS egress calculator, Azure egress, GCP egress, AWS to Hetzner, AWS vs Scaleway, AWS vs OVHcloud, Exoscale, EU cloud alternatives, cloud repatriation, cloud migration payback, digital sovereignty">
     <meta name="author" content="Jacob Verhoeks">
-    <!-- Added Canonical URL -->
     <link rel="canonical" href="https://exitcost.com">
-    <!-- Social Media Tags -->
-    <meta property="og:title" content="ExitCost - Cloud Egress Cost Calculator">
-    <meta property="og:description" content="Calculate AWS and Azure cloud egress costs and download times. Plan your cloud exit strategy with accurate cost predictions.">
+    <meta property="og:title" content="ExitCost - What does leaving your cloud actually cost?">
+    <meta property="og:description" content="Egress fee, monthly run cost on EU providers, and the break-even month. Free, runs in your browser.">
     <meta property="og:url" content="https://exitcost.com">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ExitCost - Cloud Egress Cost Calculator">
-    <meta name="twitter:description" content="Calculate AWS and Azure cloud egress costs and download times. Plan your cloud exit strategy with accurate cost predictions.">
-    <!-- Enhanced Title with Primary Keyword -->
-    <title>ExitCost - Cloud Egress Cost & Download Time Calculator | AWS & Azure</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #f0f0f0;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-            color: #e0e0e0;
-        }
-
-        select, input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            outline: none;
-        }
-
-        select option {
-            background: #1e3a8a;
-            color: #fff;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #22c55e;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #16a34a;
-        }
-
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            display: none;
-        }
-
-        #result p {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-
-        .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #e0e0e0;
-        }
-
-        .footer a {
-            color: #22c55e;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            label {
-                font-size: 1rem;
-            }
-
-            button {
-                font-size: 1rem;
-            }
-        }
-    </style>
-    <!-- Schema.org structured data -->
+    <meta name="twitter:title" content="ExitCost - What does leaving your cloud actually cost?">
+    <meta name="twitter:description" content="Egress fee, monthly run cost on EU providers, and the break-even month. Free, runs in your browser.">
+    <title>ExitCost - Cloud Exit Calculator: Egress, EU Run Cost &amp; Payback | AWS, Azure, GCP</title>
+    <!-- Bunny Fonts: EU-hosted, no tracking -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link rel="stylesheet" href="https://fonts.bunny.net/css?family=ibm-plex-sans:400,500,600|ibm-plex-mono:400,500&display=swap">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232445c9'/%3E%3Cpath d='M10 16h11m-4-5 5 5-5 5' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css?v=21">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "ExitCost - Cloud Egress Cost Calculator",
-        "description": "Calculate AWS and Azure cloud egress costs and download times. Plan your cloud exit strategy with accurate cost predictions.",
+        "name": "ExitCost - Cloud Exit Calculator",
+        "description": "Calculate cloud egress cost and download time for AWS, Azure and GCP, compare the run cost on EU providers (Hetzner, Scaleway, OVHcloud, Exoscale) and find the break-even month of your migration.",
         "url": "https://exitcost.com",
         "applicationCategory": "BusinessApplication",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "author": {
-            "@type": "Person",
-            "name": "Jacob Verhoeks",
-            "url": "https://jacob.verhoeks.org/blog/"
-        }
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": { "@type": "Person", "name": "Jacob Verhoeks", "url": "https://jacob.verhoeks.org/blog/" }
     }
     </script>
 </head>
 <body>
-    <main class="container">
-        <header>
-            <h1>ExitCost - Cloud Egress Cost Calculator</h1>
-        </header>
-        <section>
-            <div class="form-group">
-                <label for="cloud">Cloud Provider</label>
-                <select id="cloud" required aria-label="Select cloud provider">
-                    <option value="aws">AWS</option>
-                    <option value="azure">Azure</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="region">Region</label>
-                <select id="region" required aria-label="Select cloud region">
-                    <option value="us-east">US East</option>
-                    <option value="eu-west">EU West</option>
-                    <option value="asia-pacific">Asia Pacific</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="dataSize">Data Size (TB)</label>
-                <input type="number" id="dataSize" min="0" step="0.1" required placeholder="e.g., 10" aria-label="Enter data size in terabytes">
-            </div>
-            <div class="form-group">
-                <label for="objectSize">Object Size</label>
-                <select id="objectSize" required aria-label="Select average object size">
-                    <option value="small">Small (~1 MB)</option>
-                    <option value="medium">Medium (~100 MB)</option>
-                    <option value="large">Large (~1 GB)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="speed">Internet Speed (Gbps)</label>
-                <input type="number" id="speed" min="0" step="0.1" required placeholder="e.g., 1" aria-label="Enter your internet speed in gigabits per second">
-            </div>
-            <div class="form-group">
-                <label for="availability">Usable Bandwith (%)</label>
-                <input type="number" id="availability" min="0" max="100" step="1" required placeholder="e.g., 60" aria-label="Enter bandwidth availability percentage">
-            </div>
-            <button onclick="calculate()">Calculate Egress Costs</button>
-            <div id="result" role="region" aria-live="polite"></div>
+    <header class="masthead">
+        <div class="brand">exit<span>cost</span></div>
+        <nav class="stepper">
+            <a href="#exit" data-step="exit"><i></i><span>Exit</span><b data-nav="exit"></b></a>
+            <a href="#data" data-step="data"><i></i><span>Data</span><b data-nav="data"></b></a>
+            <a href="#run" data-step="run"><i></i><span>Run</span><b data-nav="run"></b></a>
+            <a href="#payback" data-step="payback"><i></i><span>Payback</span><b data-nav="payback"></b></a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <p class="kicker">Free cloud exit calculator for AWS, Azure and Google Cloud</p>
+            <h1>What does leaving your cloud actually cost?</h1>
+            <p class="lede">Price the egress bill, see what the same setup costs on Hetzner, Scaleway, OVHcloud or Exoscale, and find the month the move pays for itself. Everything is calculated in your browser. Nothing is sent anywhere.</p>
+            <div class="headline-card" id="headline" aria-live="polite"></div>
         </section>
-        <footer class="footer">
-            <p>Created by <a href="https://jacob.verhoeks.org/blog/" rel="author" target="_blank">Jacob Verhoeks</a> | Calculate your cloud exit costs with precision</p>
-        </footer>
+
+        <!-- 01 EXIT -->
+        <section class="sheet" id="exit" data-step="exit">
+            <header class="sheet-head">
+                <span class="sheet-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 4h5v16h-5"/><path d="M4 12h11m-4-4 4 4-4 4"/></svg></span>
+                <div class="sheet-title">
+                    <span class="sheet-num">Step 01</span>
+                    <h2>The exit bill <small>one-time egress</small></h2>
+                </div>
+                <div class="sheet-sum" data-sum="exit" aria-live="polite"></div>
+            </header>
+            <div class="sheet-body">
+                <div class="grid">
+                    <label>Cloud provider
+                        <select data-key="cloud">
+                            <option value="aws">AWS</option>
+                            <option value="azure">Azure</option>
+                            <option value="gcp">Google Cloud</option>
+                        </select>
+                    </label>
+                    <label>Region
+                        <select data-key="region">
+                            <option value="eu-west">Europe</option>
+                            <option value="us-east">US East</option>
+                            <option value="asia-pacific">Asia Pacific</option>
+                        </select>
+                    </label>
+                    <label>Data to move <span class="unit">TB</span>
+                        <input type="number" data-key="dataTB" min="0" step="0.1" value="50">
+                    </label>
+                    <label>Average object size
+                        <select data-key="objectSize">
+                            <option value="small">Small (~1 MB)</option>
+                            <option value="medium">Medium (~100 MB)</option>
+                            <option value="large">Large (~1 GB)</option>
+                        </select>
+                    </label>
+                    <label>Internet speed <span class="unit">Gbps</span>
+                        <input type="number" data-key="speed" min="0" step="0.1" value="1">
+                    </label>
+                    <label>Usable bandwidth <span class="unit">%</span>
+                        <input type="number" data-key="availability" min="1" max="100" step="1" value="60">
+                    </label>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" data-key="waiver">
+                    <span>Apply the provider's free-egress-for-leaving programme</span>
+                </label>
+                <p class="note" id="waiverNote"></p>
+                <div class="ledger" id="exitResult"></div>
+                <h3>Faster ways out <span class="unit">for all data in steps 01 and 02</span></h3>
+                <label class="route">Move the data by
+                    <select data-key="route">
+                        <option value="internet">Public internet</option>
+                        <option value="link">Private 10G line to your own data centre</option>
+                        <option value="device">Shipped device</option>
+                    </select>
+                </label>
+                <div class="compare" id="routes"></div>
+            </div>
+        </section>
+
+        <!-- 02 DATA PLATFORM -->
+        <section class="sheet" id="data" data-step="data">
+            <header class="sheet-head">
+                <span class="sheet-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg></span>
+                <div class="sheet-title">
+                    <span class="sheet-num">Step 02</span>
+                    <h2>The data platform <small>Snowflake or Databricks</small></h2>
+                </div>
+                <div class="sheet-sum" data-sum="data" aria-live="polite"></div>
+            </header>
+            <div class="sheet-body">
+                <p class="note">Large analytical data leaves differently. Databricks keeps Delta tables in your own bucket, so they leave as normal egress. Snowflake keeps data in its own storage: you pay warehouse credits to unload it and Snowflake's own transfer fee to move it out.</p>
+                <div class="grid four">
+                    <label>Platform
+                        <select data-key="dp">
+                            <option value="none">None</option>
+                            <option value="snowflake">Snowflake</option>
+                            <option value="databricks">Databricks</option>
+                        </select>
+                    </label>
+                    <label>Data stored <span class="unit">TB, compressed</span> <input type="number" data-key="dpTB" min="0" step="1" value="100"></label>
+                    <label>Monthly spend today <span class="unit" data-cur-unit></span> <input type="number" data-key="dpSpend" min="0" step="100" value="8000"></label>
+                    <label>After the move
+                        <select data-key="dpTarget">
+                            <option value="replace">Replace it</option>
+                            <option value="keep">Keep it</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="grid four" data-show="snowflake">
+                    <label>Snowflake edition
+                        <select data-key="sfEdition">
+                            <option value="standard">Standard</option>
+                            <option value="enterprise" selected>Enterprise</option>
+                            <option value="businessCritical">Business Critical</option>
+                        </select>
+                    </label>
+                    <label>Unload warehouse
+                        <select data-key="sfWh">
+                            <option value="M">Medium</option>
+                            <option value="L" selected>Large</option>
+                            <option value="XL">X-Large</option>
+                            <option value="2XL">2X-Large</option>
+                        </select>
+                    </label>
+                    <label>Unload speed <span class="unit">TB / hour</span> <input type="number" data-key="sfTBh" min="0.01" step="0.1"></label>
+                </div>
+                <div class="grid four" data-show="replace">
+                    <label>Replacement nodes <span class="unit">8 vCPU · 32 GB</span> <input type="number" data-key="dpNodes" min="0" step="1" value="6"></label>
+                </div>
+                <p class="note" id="dpNote"></p>
+                <div class="ledger" id="dpResult"></div>
+            </div>
+        </section>
+
+        <!-- 03 RUN -->
+        <section class="sheet" id="run" data-step="run">
+            <header class="sheet-head">
+                <span class="sheet-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M8 7h.01M8 17h.01"/></svg></span>
+                <div class="sheet-title">
+                    <span class="sheet-num">Step 03</span>
+                    <h2>The run bill <small>same setup, per month</small></h2>
+                </div>
+                <div class="sheet-sum" data-sum="run" aria-live="polite"></div>
+            </header>
+            <div class="sheet-body">
+                <p class="note">Describe your current <span data-src-label>AWS</span> setup (the provider picked in step 01), without the data platform. We map each piece to the nearest equal-or-larger product on each EU provider.</p>
+
+                <h3>Footprint</h3>
+                <div class="grid four">
+                    <label>Regions <span class="unit">identical copies</span> <input type="number" data-key="regions" min="1" step="1" value="1"></label>
+                    <label>Cross-region traffic <span class="unit">GB / month</span> <input type="number" data-key="xregionGB" min="0" step="100" value="0"></label>
+                </div>
+                <p class="note">Everything below is per region. Replication between regions is billed as cross-region traffic. Internet egress is the total for all regions.</p>
+
+                <h3>Compute <span class="unit">instances, on-demand</span></h3>
+                <div class="grid four">
+                    <label>2 vCPU · 8 GB <input type="number" data-key="vmS" min="0" step="1" value="4"></label>
+                    <label>4 vCPU · 16 GB <input type="number" data-key="vmM" min="0" step="1" value="4"></label>
+                    <label>8 vCPU · 32 GB <input type="number" data-key="vmL" min="0" step="1" value="2"></label>
+                    <label>16 vCPU · 64 GB <input type="number" data-key="vmXL" min="0" step="1" value="0"></label>
+                </div>
+
+                <h3>Data</h3>
+                <div class="grid four">
+                    <label>Managed PostgreSQL
+                        <select data-key="db">
+                            <option value="none">None</option>
+                            <option value="S">2 vCPU · 8 GB</option>
+                            <option value="M" selected>4 vCPU · 16 GB</option>
+                        </select>
+                    </label>
+                    <label>DB storage <span class="unit">GB</span> <input type="number" data-key="dbGB" min="0" step="10" value="200"></label>
+                    <label>Object storage <span class="unit">TB</span> <input type="number" data-key="objTB" min="0" step="0.1" value="20"></label>
+                    <label>Block storage <span class="unit">TB</span> <input type="number" data-key="blockTB" min="0" step="0.1" value="2"></label>
+                </div>
+                <label class="toggle"><input type="checkbox" data-key="dbHA" checked><span>Database high availability (Multi-AZ)</span></label>
+
+                <h3>Network</h3>
+                <div class="grid four">
+                    <label>Internet egress <span class="unit">TB / month</span> <input type="number" data-key="egressTB" min="0" step="0.1" value="5"></label>
+                    <label>NAT gateways <input type="number" data-key="nat" min="0" step="1" value="2"></label>
+                    <label>NAT traffic <span class="unit">GB / month</span> <input type="number" data-key="natGB" min="0" step="10" value="1000"></label>
+                    <label>Load balancers <input type="number" data-key="lb" min="0" step="1" value="2"></label>
+                </div>
+
+                <h3>Managed services you rely on <span class="unit">click to add</span></h3>
+                <p class="note">Each one is mapped to its equivalent on every EU provider. Where you have to run it yourself, we add <span id="svcRule"></span> to that provider's column.</p>
+                <div class="chips" id="serviceChips"></div>
+                <div class="gaps" id="gaps"></div>
+
+                <div class="compare" id="compare"></div>
+            </div>
+        </section>
+
+        <!-- 04 PAYBACK -->
+        <section class="sheet" id="payback" data-step="payback">
+            <header class="sheet-head">
+                <span class="sheet-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 15l4-4 3 3 5-6"/><path d="M14 8h4v4"/></svg></span>
+                <div class="sheet-title">
+                    <span class="sheet-num">Step 04</span>
+                    <h2>The payback <small>when does the move pay for itself?</small></h2>
+                </div>
+                <div class="sheet-sum" data-sum="payback" aria-live="polite"></div>
+            </header>
+            <div class="sheet-body">
+                <div class="grid four">
+                    <label>Months running both setups <input type="number" data-key="parallel" min="0" step="1" value="2"></label>
+                    <label>Engineering days <input type="number" data-key="engDays" min="0" step="1" value="40"></label>
+                    <label>Engineers on it <input type="number" data-key="team" min="1" step="1" value="2"></label>
+                    <label>Day rate <span class="unit" data-cur-unit></span> <input type="number" data-key="dayRate" min="0" step="50" value="900"></label>
+                    <label>Show prices in
+                        <select data-key="currency">
+                            <option value="EUR">EUR</option>
+                            <option value="USD">USD</option>
+                        </select>
+                    </label>
+                </div>
+                <label class="fx">1 EUR = <input type="number" data-key="fx" min="0.5" max="2" step="0.01"> USD</label>
+                <div id="paybackResult"></div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div>
+                <h2>Keep or share this result</h2>
+                <p>Every number you entered is in the link, so whoever opens it sees exactly this calculation. Free, no account, nothing stored on a server.</p>
+            </div>
+            <div class="cta-actions">
+                <button class="btn primary" id="copyLink" type="button">Copy share link</button>
+                <a class="btn" id="emailLink" href="#">Email this report</a>
+                <button class="btn" id="printLink" type="button" onclick="window.print()">Print or save as PDF</button>
+            </div>
+        </section>
+
+        <section class="fineprint">
+            <h2>How we calculate</h2>
+            <ul>
+                <li>List prices, on-demand, excluding VAT, no discounts, reserved instances or savings plans. The current-cloud run cost uses <span id="srcRegionLabel"></span>.</li>
+                <li>Egress tiers are applied as if all data leaves in one month. Spread over several months, the free allowance repeats and the first, most expensive tier applies again each month.</li>
+                <li>Faster ways out (checked 26 Oct 2026): AWS Direct Connect pay-as-you-go and flat-rate pricing (from 15 Sep 2026), Azure ExpressRoute and Data Box from the Azure retail prices API, Google Cloud Interconnect list prices. Cross-connect, EU-side line and lead time are estimates. A private line only fits a move to your own data centre or colocation rack: Hetzner, Scaleway and most EU clouds sell no direct-connect product (OVHcloud Connect is the exception), so for those the internet route applies. The free-egress-for-leaving programmes of all three clouds cover internet transfers only.</li>
+                <li>Snowflake credit prices and transfer fees are from Snowflake's <a href="https://www.snowflake.com/legal-files/CreditConsumptionTable.pdf" rel="noopener">Service Consumption Table</a> (effective 15 Oct 2026), on-demand rates. Unloading to a bucket in the same region has no Snowflake transfer fee. Unload speed is not published: the default (about 0.1 TB per credit) is an estimate, so time a sample unload and enter your own.</li>
+                <li>Where a provider has no managed product (for example, a managed database on Hetzner), we price a self-hosted equivalent on VMs and say so.</li>
+                <li>Prices last checked <span id="lastVerified"></span>. Rows marked <span class="tag warn">unverified</span> could not be confirmed on the official price page. Always check before you commit.</li>
+            </ul>
+        </section>
     </main>
 
-    <script>
-        // Egress cost tiers (per GB, USD) by region
-        const cloudCosts = {
-            aws: {
-                'us-east': [
-                    { limit: 100 / 1024, cost: 0 }, // First 100 GB free
-                    { limit: 10, cost: 0.09 }, // Up to 10 TB
-                    { limit: 50, cost: 0.085 }, // Next 40 TB
-                    { limit: 150, cost: 0.07 }, // Next 100 TB
-                    { limit: Infinity, cost: 0.05 } // >150 TB
-                ],
-                'eu-west': [
-                    { limit: 100 / 1024, cost: 0 },
-                    { limit: 10, cost: 0.09 },
-                    { limit: 50, cost: 0.085 },
-                    { limit: 150, cost: 0.07 },
-                    { limit: Infinity, cost: 0.05 }
-                ],
-                'asia-pacific': [
-                    { limit: 100 / 1024, cost: 0 },
-                    { limit: 10, cost: 0.117 },
-                    { limit: 50, cost: 0.1105 },
-                    { limit: 150, cost: 0.091 },
-                    { limit: Infinity, cost: 0.065 }
-                ]
-            },
-            azure: {
-                'us-east': [
-                    { limit: 100 / 1024, cost: 0 },
-                    { limit: 10, cost: 0.087 },
-                    { limit: 50, cost: 0.083 },
-                    { limit: 150, cost: 0.07 },
-                    { limit: 500, cost: 0.05 },
-                    { limit: Infinity, cost: 0.05 }
-                ],
-                'eu-west': [
-                    { limit: 100 / 1024, cost: 0 },
-                    { limit: 10, cost: 0.087 },
-                    { limit: 50, cost: 0.083 },
-                    { limit: 150, cost: 0.07 },
-                    { limit: 500, cost: 0.05 },
-                    { limit: Infinity, cost: 0.05 }
-                ],
-                'asia-pacific': [
-                    { limit: 100 / 1024, cost: 0 },
-                    { limit: 10, cost: 0.10875 },
-                    { limit: 50, cost: 0.10375 },
-                    { limit: 150, cost: 0.0875 },
-                    { limit: 500, cost: 0.0625 },
-                    { limit: Infinity, cost: 0.0625 }
-                ]
-            }
-        };
+    <footer class="footer">
+        <p>Made by <a href="https://jacob.verhoeks.org/blog/" rel="author" target="_blank">Jacob Verhoeks</a> · No cookies, no tracking. Your numbers are calculated in your browser and never sent anywhere.</p>
+    </footer>
 
-        // API call costs (per GET request, USD)
-        const apiCallCost = {
-            aws: 0.005 / 1000, // $0.005 per 1,000 GET requests
-            azure: 0.004 / 10000 // $0.004 per 10,000 read operations
-        };
-
-        function calculate() {
-            // Get inputs
-            const cloud = document.getElementById('cloud').value;
-            const region = document.getElementById('region').value;
-            const dataSizeTB = parseFloat(document.getElementById('dataSize').value);
-            const objectSize = document.getElementById('objectSize').value;
-            const speedGbps = parseFloat(document.getElementById('speed').value);
-            const availability = parseFloat(document.getElementById('availability').value) / 100;
-
-            // Validate inputs
-            if (!dataSizeTB || !speedGbps || !availability || dataSizeTB < 0 || speedGbps < 0 || availability < 0 || availability > 1) {
-                alert('Please enter valid inputs.');
-                return;
-            }
-
-            // Convert TB to GB
-            const dataSizeGB = dataSizeTB * 1024;
-
-            // Calculate egress cost using tiered pricing
-            const tiers = cloudCosts[cloud][region];
-            let remainingGB = dataSizeGB;
-            let egressCost = 0;
-
-            for (const tier of tiers) {
-                if (remainingGB <= 0) break;
-                const tierSizeGB = (tier.limit === Infinity ? Infinity : tier.limit * 1024);
-                const gbInThisTier = Math.min(remainingGB, tierSizeGB - (tiers.indexOf(tier) === 0 ? 0 : tiers[tiers.indexOf(tier) - 1].limit * 1024));
-                egressCost += gbInThisTier * tier.cost;
-                remainingGB -= gbInThisTier;
-            }
-
-            // Calculate API call cost based on object size
-            let requestsPerGB;
-            switch (objectSize) {
-                case 'small': // 1 MB = 0.001 GB
-                    requestsPerGB = 1000; // 1 GB = 1,000 objects
-                    break;
-                case 'medium': // 100 MB = 0.1 GB
-                    requestsPerGB = 10; // 1 GB = 10 objects
-                    break;
-                case 'large': // 1 GB
-                    requestsPerGB = 1; // 1 GB = 1 object
-                    break;
-            }
-            const getRequests = dataSizeGB * requestsPerGB;
-            const apiCost = getRequests * apiCallCost[cloud];
-
-            // Total cost
-            const totalCost = egressCost + apiCost;
-
-            // Calculate download time
-            let speedOverhead = objectSize === 'small' ? 0.90 : 0.95; // 10% for small objects, 5% otherwise
-            const availableBandwidthGbps = speedGbps * availability;
-            const bandwidthGBps = availableBandwidthGbps * 0.125; // 1 Gbps = 0.125 GB/s
-            const effectiveBandwidthGBps = bandwidthGBps * speedOverhead;
-            const downloadTimeSeconds = dataSizeGB / effectiveBandwidthGBps;
-            const downloadTimeHours = downloadTimeSeconds / 3600;
-            const downloadTimeDays = downloadTimeHours / 24;
-
-            // Format duration
-            let durationText = `${downloadTimeHours.toFixed(2)} hours`;
-            if (downloadTimeHours > 48) {
-                durationText += ` (${downloadTimeDays.toFixed(2)} days)`;
-            }
-
-            // Display results
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `
-                <h2>Your Cloud Exit Results</h2>
-                <p><strong>Download Time:</strong> ${durationText}</p>
-                <p><strong>Egress Cost:</strong> $${egressCost.toFixed(2)}</p>
-                <p><strong>API Call Cost:</strong> $${apiCost.toFixed(2)}</p>
-                <p><strong>Total Cost:</strong> $${totalCost.toFixed(2)}</p>
-            `;
-            resultDiv.style.display = 'block';
-        }
-    </script>
+    <script src="prices.js?v=21"></script>
+    <script src="app.js?v=21"></script>
 </body>
 </html>
